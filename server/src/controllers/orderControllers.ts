@@ -9,15 +9,40 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment as any);
 
+type OrderType = {
+    _id: string;
+    __v?: number;
+    size: number;
+    master: string;
+    client: string;
+    city: string;
+    start_time: Date;
+    end_time: Date;
+};
+type ClientType = {
+    _id: string;
+    __v?: number;
+    client_order: Array<object>;
+    client_name: string;
+    client_email: string;
+};
+interface IClient {
+    _id?: string;
+    __v?: number;
+    client_order: Array<object>;
+    client_name: string;
+    client_email: string;
+}
+
 export async function getMasterForOrder(req: Request, res: Response) {
-    let orderCity = req.query.orderCity;
-    let startDate = req.query.startDate;
-    let endDate = req.query.endDate;
+    let orderCity: any = req.query.orderCity;
+    let startDate: any = req.query.startDate;
+    let endDate: any = req.query.endDate;
 
     try {
         const master = await MasterModel.find().populate('order');
-        const masters = master.filter((city) => {
-            // @ts-ignore
+
+        const masters: any = master.filter((city: any) => {
             return city.city._id == orderCity;
         });
 
@@ -30,21 +55,14 @@ export async function getMasterForOrder(req: Request, res: Response) {
             let isBusy = false;
 
             for (let ii = 0; ii < orders.length; ii++) {
-                // @ts-ignore
                 let ordersStartTime = orders[ii].start_time;
-                // @ts-ignore
                 let ordersEndTime = orders[ii].end_time;
-                // @ts-ignore
                 let clientStartTime = new Date(startDate);
-                // @ts-ignore
                 let ordersStartTimeShort = moment(ordersStartTime).format('YYYY MM DD');
-                // @ts-ignore
-                let oldOrder = [moment(+ordersStartTime), moment(+ordersEndTime)];
-                // @ts-ignore
-                let newOrder = [moment(+clientStartTime), moment(+endDate)];
-                // @ts-ignore
+                let oldOrder: any = [moment(+ordersStartTime), moment(+ordersEndTime)];
+                let newOrder: any = [moment(+clientStartTime), moment(+endDate)];
+
                 let range1 = moment.range(newOrder);
-                // @ts-ignore
                 let range2 = moment.range(oldOrder);
 
                 if (clientDay !== ordersStartTimeShort) {
@@ -85,18 +103,17 @@ export async function postOrder(req: Request, res: Response) {
 
         let orderId = order._id;
 
-        let currentClient = await ClientModel.findById(client);
-        // @ts-ignore
-        let currentClientOrder = currentClient.client_order;
-        // @ts-ignore
+        let currentClient: any = await ClientModel.findById(client);
+
+        let currentClientOrder = currentClient?.client_order;
         currentClientOrder.push(orderId);
         let addOrderIdToClient = { client_order: currentClientOrder };
         await ClientModel.findByIdAndUpdate(client, addOrderIdToClient, { new: true });
 
         let currentMaster = await MasterModel.findById(master);
-        // @ts-ignore
-        let currentMasterOrder = currentMaster.order;
-        // @ts-ignore
+
+        let currentMasterOrder: any = currentMaster?.order;
+
         currentMasterOrder.push(orderId);
         let addOrderIdToMaster = { order: currentMasterOrder };
         await MasterModel.findByIdAndUpdate(master, addOrderIdToMaster, { new: true });
@@ -129,19 +146,16 @@ export async function updateOrder(req: Request, res: Response) {
         if (!id) {
             res.status(400).json({ message: 'ID not found' });
         }
-        let order = await OrderModel.findById(id);
+        let order: any = await OrderModel.findById(id);
 
-        // @ts-ignore
         let clientId = order.client._id;
         let clientData = { client_name: client_name, client_email: client_email };
         await ClientModel.findByIdAndUpdate(clientId, clientData, { new: true });
 
-        // @ts-ignore
         let oldMasterId = order.master._id;
         if (!oldMasterId == master) {
-            let editOldMaster = await MasterModel.findById(oldMasterId);
-            // @ts-ignore
-            let masterAllOrder = editOldMaster.order.filter((deleteId) => deleteId != id);
+            let editOldMaster: any = await MasterModel.findById(oldMasterId);
+            let masterAllOrder = editOldMaster.order.filter((deleteId: string) => deleteId != id);
             let addOrderIdToMaster = { order: masterAllOrder };
             await MasterModel.findByIdAndUpdate(oldMasterId, addOrderIdToMaster, { new: true });
         }
@@ -164,20 +178,19 @@ export async function deleteOrder(req: Request, res: Response) {
 
         const order = await OrderModel.findByIdAndDelete(id);
 
-        const masterWithCurrentOrder = await MasterModel.findOne({ order: id });
-        // @ts-ignore
-        let masterAllOrder = masterWithCurrentOrder.order.filter((deleteId) => deleteId != id);
-        // @ts-ignore
+        const masterWithCurrentOrder: any = await MasterModel.findOne({ order: id });
+
+        let masterAllOrder = masterWithCurrentOrder.order.filter((deleteId: string) => deleteId != id);
+
         let masterId = masterWithCurrentOrder._id;
         let addOrderIdToMaster = { order: masterAllOrder };
         await MasterModel.findByIdAndUpdate(masterId, addOrderIdToMaster, { new: true });
 
         // START Delete orderId in Client
 
-        const clientWithCurrentOrder = await ClientModel.findOne({ client_order: id });
-        // @ts-ignore
-        let clientAllOrder = clientWithCurrentOrder.client_order.filter((deleteId) => deleteId != id);
-        // @ts-ignore
+        const clientWithCurrentOrder: any = await ClientModel.findOne({ client_order: id });
+
+        let clientAllOrder = clientWithCurrentOrder.client_order.filter((deleteId: string) => deleteId != id);
         let clientId = clientWithCurrentOrder._id;
         let addOrderIdToClient = { client_order: clientAllOrder };
         await ClientModel.findByIdAndUpdate(clientId, addOrderIdToClient, { new: true });

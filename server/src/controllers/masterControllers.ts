@@ -4,7 +4,6 @@ import { OrderModel } from '../models/Order';
 import { validationResult } from 'express-validator';
 
 export async function postMaster(req: Request, res: Response) {
-    console.log('req.body', req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ message: 'Incorrect request', errors });
@@ -54,9 +53,8 @@ export async function deleteMaster(req: Request, res: Response) {
     }
     try {
         const { id } = req.params;
+        const master: any = await MasterModel.findByIdAndDelete(id);
 
-        const master = await MasterModel.findByIdAndDelete(id);
-        // @ts-ignore
         const allMasterOrders = master.order;
         for (let i = 0; i < allMasterOrders.length; i++) {
             await OrderModel.findByIdAndDelete(allMasterOrders[i]);
