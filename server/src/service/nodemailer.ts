@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport(
     {
@@ -15,11 +15,9 @@ const transporter = nodemailer.createTransport(
     },
 );
 
-const mailer = (message) => {
+export const mailer = (message: any) => {
     transporter.sendMail(message, (err, info) => {
         if (err) return console.log(err);
         console.log('Email sent: ', info);
     });
 };
-
-module.exports = mailer;

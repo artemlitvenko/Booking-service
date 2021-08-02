@@ -1,9 +1,9 @@
-const { maxEmailLength } = require('./validationConstants');
-const { maxLength, maxPasswordLength, maxRatingLength, maxSizeLength, minLength, minRatingLength, minSizeLength } = require('./validationConstants');
+import { maxEmailLength } from './validationConstants';
+import { maxLength, maxPasswordLength, maxRatingLength, maxSizeLength, minLength, minRatingLength, minSizeLength } from './validationConstants';
 
-const { check } = require('express-validator');
+import { check } from 'express-validator';
 
-exports.registerValidators = [
+export const registerValidators = [
     check('email', 'Uncorrect email').isEmail().trim(),
     check('password', `Password must be longer than ${minLength} and shorter than ${maxPasswordLength}`).isLength({
         min: minLength,
@@ -11,7 +11,7 @@ exports.registerValidators = [
     }),
 ];
 
-exports.loginValidators = [
+export const loginValidators = [
     check('email', 'Uncorrect email').isEmail().isLength({ min: minLength, max: maxEmailLength }).trim(),
     check('password', `Password must be longer than ${minLength} and shorter than ${maxPasswordLength}`).isLength({
         min: minLength,
@@ -19,11 +19,11 @@ exports.loginValidators = [
     }),
 ];
 
-exports.cityValidators = [
+export const cityValidators = [
     check('city_name', `Name must be longer than ${minLength} and shorter than ${maxLength}`).isLength({ min: minLength, max: maxLength }).trim(),
 ];
 
-exports.masterEditValidators = [
+export const masterEditValidators = [
     check('name', `Name must be longer than ${minLength} and shorter than ${maxLength}`).isLength({ min: minLength, max: maxLength }).trim(),
     check('rating', `Rating must be a number between ${minRatingLength} and ${maxRatingLength}`).isFloat({
         min: minRatingLength,
@@ -32,7 +32,7 @@ exports.masterEditValidators = [
     check('city', 'City must be MongoId').isMongoId().trim(),
     check('id', 'Id must be MongoId').isMongoId().trim(),
 ];
-exports.masterPostValidators = [
+export const masterPostValidators = [
     check('name', `Name must be longer than ${minLength} and shorter than ${maxLength}`).isLength({ min: minLength, max: maxLength }).trim(),
     check('rating', `Rating must be a number between ${minRatingLength} and ${maxRatingLength}`).isFloat({
         min: minRatingLength,
@@ -40,9 +40,9 @@ exports.masterPostValidators = [
     }),
     check('city', 'City must be MongoId').isMongoId().trim(),
 ];
-exports.masterDeleteValidators = [check('id', 'Id must be MongoId').isMongoId().trim()];
+export const masterDeleteValidators = [check('id', 'Id must be MongoId').isMongoId().trim()];
 
-exports.orderValidators = [
+export const orderValidators = [
     check('client_name', `Name must be longer than ${minLength} and shorter than ${maxLength}`).isLength({ min: minLength, max: maxLength }).trim(),
     check('client_email', 'Uncorrect email').isEmail().isLength({ min: minLength, max: maxEmailLength }).trim(),
     check('master', 'Master must be MongoId').isMongoId().trim(),

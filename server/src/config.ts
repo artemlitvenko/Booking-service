@@ -1,10 +1,10 @@
-const dotenv = require('dotenv');
-const path = require('path');
+import dotenv from 'dotenv';
+import path from 'path';
 
 const root = path.join.bind(this, __dirname);
-dotenv.config({ path: root('.env') });
+dotenv.config({ path: root('../.env') });
 
-module.exports = {
+export default {
     PORT: process.env.PORT || 5000,
     MONGO_URL: process.env.MONGO_URL,
     SECRET_KEY: process.env.SECRET_KEY,
