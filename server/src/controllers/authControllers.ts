@@ -75,9 +75,12 @@ export async function googleLogin(req: Request, res: Response) {
         res.send({ message: 'Server error' });
     }
 }
-export async function authAuth(req: Request, res: Response) {
+
+export interface IAuthAuthRequest extends Request {
+    user: any
+}
+export async function authAuth(req: IAuthAuthRequest, res: Response) {
     try {
-        // @ts-ignore
         const user = await UserModel.findOne({ email: req.user.email });
         const token = jwt.sign({ email: user?.email }, `${key}`, { expiresIn: '1h' });
         return res.json({

@@ -31,8 +31,7 @@ export async function deleteClient(req: Request, res: Response) {
         if (!id) {
             res.status(400).json({ message: 'ID not found' });
         }
-        const client = await ClientModel.findByIdAndDelete(id);
-        // @ts-ignore
+        const client: any = await ClientModel.findByIdAndDelete(id);
         const allClientOrders = client.client_order;
 
         let orderForDelete;
@@ -40,19 +39,17 @@ export async function deleteClient(req: Request, res: Response) {
         for (let i = 0; i < allClientOrders.length; i++) {
             await OrderModel.findByIdAndDelete(allClientOrders[i]);
 
-            const masterWithCurrentOrder = await MasterModel.findOne({ order: allClientOrders[i] });
+            const masterWithCurrentOrder: any = await MasterModel.findOne({ order: allClientOrders[i] });
             orderForDelete = allClientOrders[i];
-            // @ts-ignore
+
             let masterAllOrder = masterWithCurrentOrder.order.filter(
-                // @ts-ignore
-                (masterOrderId) => !allClientOrders.some((clientOrderId) => allClientOrders.includes(masterOrderId)),
+                (masterOrderId: string) => !allClientOrders.some((clientOrderId: string) => allClientOrders.includes(masterOrderId)),
             );
-            // @ts-ignore
+
             let masterId = masterWithCurrentOrder._id;
             let addOrderIdToMaster = { order: masterAllOrder };
             await MasterModel.findByIdAndUpdate(masterId, addOrderIdToMaster, { new: true });
         }
-
         return res.json(client);
     } catch (e) {
         res.status(500).json(e);

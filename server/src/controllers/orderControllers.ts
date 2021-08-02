@@ -9,31 +9,6 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment as any);
 
-type OrderType = {
-    _id: string;
-    __v?: number;
-    size: number;
-    master: string;
-    client: string;
-    city: string;
-    start_time: Date;
-    end_time: Date;
-};
-type ClientType = {
-    _id: string;
-    __v?: number;
-    client_order: Array<object>;
-    client_name: string;
-    client_email: string;
-};
-interface IClient {
-    _id?: string;
-    __v?: number;
-    client_order: Array<object>;
-    client_name: string;
-    client_email: string;
-}
-
 export async function getMasterForOrder(req: Request, res: Response) {
     let orderCity: any = req.query.orderCity;
     let startDate: any = req.query.startDate;
@@ -97,23 +72,18 @@ export async function postOrder(req: Request, res: Response) {
             clientCreate = await ClientModel.create({ client_name, client_email });
         }
         let client = clientCreate._id;
-
         const order = await OrderModel.create({ master, client, city, size, start_time, end_time });
         res.json(order);
-
         let orderId = order._id;
 
         let currentClient: any = await ClientModel.findById(client);
-
         let currentClientOrder = currentClient?.client_order;
         currentClientOrder.push(orderId);
         let addOrderIdToClient = { client_order: currentClientOrder };
         await ClientModel.findByIdAndUpdate(client, addOrderIdToClient, { new: true });
 
         let currentMaster = await MasterModel.findById(master);
-
         let currentMasterOrder: any = currentMaster?.order;
-
         currentMasterOrder.push(orderId);
         let addOrderIdToMaster = { order: currentMasterOrder };
         await MasterModel.findByIdAndUpdate(master, addOrderIdToMaster, { new: true });
@@ -147,7 +117,6 @@ export async function updateOrder(req: Request, res: Response) {
             res.status(400).json({ message: 'ID not found' });
         }
         let order: any = await OrderModel.findById(id);
-
         let clientId = order.client._id;
         let clientData = { client_name: client_name, client_email: client_email };
         await ClientModel.findByIdAndUpdate(clientId, clientData, { new: true });
@@ -177,11 +146,8 @@ export async function deleteOrder(req: Request, res: Response) {
         }
 
         const order = await OrderModel.findByIdAndDelete(id);
-
         const masterWithCurrentOrder: any = await MasterModel.findOne({ order: id });
-
         let masterAllOrder = masterWithCurrentOrder.order.filter((deleteId: string) => deleteId != id);
-
         let masterId = masterWithCurrentOrder._id;
         let addOrderIdToMaster = { order: masterAllOrder };
         await MasterModel.findByIdAndUpdate(masterId, addOrderIdToMaster, { new: true });

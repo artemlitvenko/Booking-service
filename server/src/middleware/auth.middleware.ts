@@ -4,7 +4,11 @@ import config from '../config';
 
 const key = config.SECRET_KEY;
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export interface IAuthToken extends Request {
+    user: any
+}
+
+export const authMiddleware = (req: IAuthToken, res: Response, next: NextFunction) => {
     if (req.method === 'OPTIONS') {
         return next();
     }
@@ -17,11 +21,9 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
 
         if (token && isCustomAuth) {
             decodedData = jwt.verify(token, `${key}`);
-            // @ts-ignore
             req.user = decodedData;
         } else {
             decodedData = jwt.decode(token);
-            // @ts-ignore
             req.user = decodedData;
         }
         next();

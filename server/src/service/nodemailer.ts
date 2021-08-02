@@ -14,8 +14,8 @@ const transporter = nodemailer.createTransport(
         from: 'Clockwise Service <clockwise.service.info@gmail.com>',
     },
 );
-// @ts-ignore
-export const mailer = (message) => {
+
+export const mailer = (message: any) => {
     transporter.sendMail(message, (err, info) => {
         if (err) return console.log(err);
         console.log('Email sent: ', info);
