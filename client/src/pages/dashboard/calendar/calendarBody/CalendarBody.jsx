@@ -36,7 +36,11 @@ const CalendarBody = ({ startDay, today }) => {
     }, [day, totalDays]);
 
     const dayName = useMemo(() => {
-        return nameDay.map((day) => <div className="day">{day}</div>);
+        return nameDay.map((day) => (
+            <div key={day} className="day">
+                {day}
+            </div>
+        ));
     }, [nameDay]);
 
     const orderMonth = useSelector((state) => state.orderReducer.orders);
