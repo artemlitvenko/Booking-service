@@ -7,15 +7,18 @@ import { setPopupEditDisplayMaster } from '../../../constarts/actionMasterСreat
 const Master = ({ master, setCurrentMasterId }) => {
     const dispatch = useDispatch();
 
-    const deleteClickHandler = useCallback((e) => {
-        e.stopPropagation();
-        dispatch(deleteMaster(master._id));
-    }, []);
+    const deleteClickHandler = useCallback(
+        (e) => {
+            e.stopPropagation();
+            dispatch(deleteMaster(master._id));
+        },
+        [dispatch, master._id],
+    );
 
     const showPopupEditHandler = useCallback(() => {
         dispatch(setPopupEditDisplayMaster(true));
         setCurrentMasterId(master._id);
-    }, []);
+    }, [dispatch, setCurrentMasterId, master._id]);
 
     return (
         <div className="masters-item">

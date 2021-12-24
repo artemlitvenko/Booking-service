@@ -26,10 +26,13 @@ const PopupAdd = () => {
             }),
         [],
     );
-    const onSubmit = useCallback((values) => {
-        dispatch(createCity(values.cityName));
-        dispatch(setPopupAddDisplay(false));
-    }, []);
+    const onSubmit = useCallback(
+        (values) => {
+            dispatch(createCity(values.cityName));
+            dispatch(setPopupAddDisplay(false));
+        },
+        [dispatch],
+    );
 
     if (!popupDisplay) {
         return null;

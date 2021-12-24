@@ -12,13 +12,13 @@ const City = ({ city, setCurrentId }) => {
             e.stopPropagation();
             dispatch(deleteCity(city._id));
         },
-        [city._id],
+        [city._id, dispatch],
     );
 
     const showPopupEditHandler = useCallback(() => {
         dispatch(setPopupEditDisplay(true));
         setCurrentId(city._id);
-    }, [city._id]);
+    }, [city._id, setCurrentId, dispatch]);
 
     return (
         <div className="cities-item">

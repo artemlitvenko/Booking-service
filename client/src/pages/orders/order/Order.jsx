@@ -11,7 +11,7 @@ const Order = ({ order }) => {
             e.stopPropagation();
             dispatch(deleteOrder(order._id));
         },
-        [order._id],
+        [dispatch, order._id],
     );
 
     const startTime = new Date(order.start_time).toLocaleString();

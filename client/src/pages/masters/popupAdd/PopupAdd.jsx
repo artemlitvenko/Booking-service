@@ -24,7 +24,7 @@ const PopupAdd = () => {
 
     useEffect(() => {
         dispatch(getCity());
-    }, []);
+    }, [dispatch]);
 
     const initialValues = useMemo(
         () => ({
@@ -44,16 +44,13 @@ const PopupAdd = () => {
             }),
         [],
     );
-    const onSubmit = useCallback((values) => {
-        dispatch(createMaster(values.masterName, Number(values.masterRating), values.masterCity));
-        console.log(
-            'values.masterName, Number(values.masterRating), values.masterCity',
-            values.masterName,
-            Number(values.masterRating),
-            values.masterCity,
-        );
-        dispatch(setPopupAddDisplayMaster(false));
-    }, []);
+    const onSubmit = useCallback(
+        (values) => {
+            dispatch(createMaster(values.masterName, Number(values.masterRating), values.masterCity));
+            dispatch(setPopupAddDisplayMaster(false));
+        },
+        [dispatch],
+    );
 
     if (!popupDisplay) {
         return null;

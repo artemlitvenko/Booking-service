@@ -41,7 +41,7 @@ const OrderForm = () => {
 
     useEffect(() => {
         dispatch(getCity());
-    }, []);
+    }, [dispatch]);
 
     const [clientName, setClientName] = useState('');
     const [clientEmail, setClientEmail] = useState('');

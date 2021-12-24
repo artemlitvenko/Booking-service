@@ -10,12 +10,12 @@ const ClientsList = () => {
 
     useEffect(() => {
         dispatch(getClient());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div>
             <h1>ClientsList</h1>
-            <Clients setCurrentClientId={setCurrentClientId} />
+            <Clients currentClientId={currentClientId} setCurrentClientId={setCurrentClientId} />
         </div>
     );
 };

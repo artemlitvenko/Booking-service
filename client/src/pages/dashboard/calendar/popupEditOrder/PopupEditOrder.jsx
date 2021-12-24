@@ -64,7 +64,7 @@ const PopupEditOrder = ({ currentOrderId }) => {
 
     useEffect(() => {
         dispatch(getCity());
-    }, []);
+    }, [dispatch]);
 
     const citySelect = orderObj.map((city) => (
         <option key={city._id} value={city._id}>
@@ -97,9 +97,10 @@ const PopupEditOrder = ({ currentOrderId }) => {
             formik.values.clientName,
             formik.values.clientEmail,
             formik.values.orderCity,
-            Number(formik.values.orderSize),
+            formik.values.orderSize,
             startOrder,
             endDate,
+            currentOrderId,
         ],
     );
 

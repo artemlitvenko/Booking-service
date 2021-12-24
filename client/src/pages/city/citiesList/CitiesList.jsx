@@ -12,11 +12,11 @@ const CitiesList = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getCity());
-    }, []); // если массив зависимости пустой, то функция вызовется один раз после отрисовки компонента
+    }, [dispatch]); // если массив зависимости пустой, то функция вызовется один раз после отрисовки компонента
 
     const showPopupDeleteHandler = useCallback(() => {
         dispatch(setPopupAddDisplay(true));
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className="cities-list">

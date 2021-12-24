@@ -11,7 +11,7 @@ const Client = ({ client }) => {
             e.stopPropagation();
             dispatch(deleteClient(client._id));
         },
-        [dispatch],
+        [client._id, dispatch],
     );
     return (
         <div className="clients-item">

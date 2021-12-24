@@ -11,11 +11,11 @@ import { ratings } from '../../../constarts/ratings';
 import { maxLength, minLength } from '../../../constarts/validationValue';
 
 const PopupEdit = ({ currentId }) => {
+    const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getCity());
-    }, []);
-
-    const dispatch = useDispatch();
+    }, [dispatch]);
 
     const popupEditDisplay = useSelector((state) => state.masterReducer.popupEditDisplay);
     const masterEdit = useSelector((state) => (currentId ? state.masterReducer.masters.find((m) => m._id === currentId) : null));

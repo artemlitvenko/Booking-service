@@ -20,7 +20,7 @@ const App = () => {
 
     useEffect(() => {
         dispatch(auth());
-    }, []);
+    }, [dispatch]);
 
     return (
         <BrowserRouter>

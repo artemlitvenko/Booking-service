@@ -11,7 +11,8 @@ const Calendar = () => {
 
     useEffect(() => {
         dispatch(getOrder());
-    }, []);
+    }, [dispatch]);
+
     useEffect(() => {
         moment.updateLocale('en', { week: { dow: 1 } });
     }, [moment.updateLocale('en', { week: { dow: 1 } })]);

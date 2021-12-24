@@ -16,7 +16,7 @@ const PopupOrder = ({ currentOrderId }) => {
             dispatch(deleteOrder(currentOrderId));
             dispatch(popupCalendarDisplayOrder(false));
         },
-        [currentOrderId],
+        [dispatch, currentOrderId],
     );
 
     const popupOrderDisplay = useSelector((state) => state.orderReducer.popupCalendarDisplay);

@@ -2,10 +2,10 @@ import React, { useCallback, useMemo } from 'react';
 import './LoginForm.css';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { login, loginWithGoogle } from '../../../actions/user';
+import { login } from '../../../actions/user';
 import { useDispatch } from 'react-redux';
 import { longEmail, longPassword, needEmail, requiredField } from '../../../constarts/validationMessage';
-import { GoogleLogin } from 'react-google-login';
+//import { GoogleLogin } from 'react-google-login';
 import { maxEmailLength, maxPasswordLength } from '../../../constarts/validationValue';
 
 const LoginForm = () => {
@@ -33,7 +33,7 @@ const LoginForm = () => {
         }),
         [],
     );
-    const googleSuccess = async (res) => {
+    /*const googleSuccess = async (res) => {
         const email = res?.profileObj.email;
         const token = res?.tokenId;
         try {
@@ -45,7 +45,7 @@ const LoginForm = () => {
     const googleFailure = (error) => {
         console.log(error);
         console.log('Google Sign In was unsuccessful');
-    };
+    };*/
 
     return (
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
@@ -80,13 +80,13 @@ const LoginForm = () => {
                         />
 
                         <button type="submit">Log in</button>
-                        <GoogleLogin
+                        {/*<GoogleLogin
                             clientId={process.env.REACT_APP_CLIENT_ID}
                             className="google-login"
                             onSuccess={googleSuccess}
                             onFailure={googleFailure}
                             cookiePolicy="single_host_origin"
-                        />
+                        />*/}
                     </form>
                 </div>
             )}

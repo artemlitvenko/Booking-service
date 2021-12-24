@@ -16,7 +16,7 @@ const MastersList = () => {
 
     const showPopupDeleteHandler = useCallback(() => {
         dispatch(setPopupAddDisplayMaster(true));
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className="item-list">

@@ -12,7 +12,6 @@ export const getMaster = () => {
 };
 
 export const createMaster = (name, rating, city) => {
-    debugger;
     return async (dispatch) => {
         try {
             const response = await axios.post(`${API_URL}api/master`, { name, rating, city });
